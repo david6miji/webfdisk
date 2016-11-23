@@ -1,0 +1,26 @@
+.mainTitle {
+    height: 28px;
+    color: #FFF;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 0px 5px 0 5px;
+    /* background: transparent; */
+    background-color: #333333;
+}
+
+.mainTitle table {
+	width: 100%;
+}
+
+.mainTitleBrand {
+	width: 20%;
+}
+
+.mainTitleInfo {
+	width: 20%;
+}
+
+.mainTitleContent {
+	width: 60%;
+	text-align: center;
+}
