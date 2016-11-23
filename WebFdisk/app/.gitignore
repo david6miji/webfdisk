@@ -2,3 +2,5 @@
 node_modules/
 *.log
 .*.gulp-cache
+server_dist/
+client_dist/
