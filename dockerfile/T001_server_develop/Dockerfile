@@ -9,4 +9,6 @@ WORKDIR /tmp/
 RUN	wget -qO- https://get.docker.com/ | sh
 RUN	npm install -g mocha
 
+RUN	apt-get install -y libudev-dev
+
 WORKDIR /work/

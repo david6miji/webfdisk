@@ -27,11 +27,12 @@
     "chai": "^3.5.0",
     "chai-http": "^3.0.0",
     "cheerio": "^0.22.0",
+    "codemirror": "^5.20.2",
     "css-loader": "^0.25.0",
     "del": "^2.2.2",
     "expose-loader": "^0.7.1",
     "file-loader": "^0.9.0",
-	"font-awesome": "^4.7.0",
+    "font-awesome": "^4.7.0",
     "font-awesome-webpack": "0.0.4",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
@@ -46,13 +47,15 @@
     "gulp-webpack": "^1.5.0",
     "imports-loader": "^0.6.5",
     "jquery": "^3.1.1",
+    "markdown": "^0.5.0",
+    "pty.js": "^0.3.1",
     "request": "^2.78.0",
     "script-loader": "^0.7.0",
+    "serve-favicon": "^2.3.2",
     "style-loader": "^0.13.1",
+    "udev": "^0.3.0",
     "url-loader": "^0.5.7",
-    "webpack": "^1.13.3",
     "w2ui": "^1.4.3",
-    "codemirror": "^5.20.2",
-    "markdown": "^0.5.0"
+    "webpack": "^1.13.3"
   }
 }
