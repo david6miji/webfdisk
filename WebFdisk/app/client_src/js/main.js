@@ -12,10 +12,12 @@ import indexCtrl 			from 	'./ctrl-index.js';
 import titleCtrl 			from 	'./ctrl-title.js';
 import menuCtrl 			from 	'./ctrl-menu.js';
 import leftCtrl 			from 	'./ctrl-left.js';
-import mainCtrl 			from 	'./ctrl-main.js';
 import rightCtrl 			from 	'./ctrl-right.js';
 import previewCtrl 			from 	'./ctrl-preview.js';
 import bottomCtrl	 	    from 	'./ctrl-bottom.js';
+
+import mainCtrl 			from 	'./ctrl-main.js';
+import configCtrl 			from 	'./ctrl-config.js';
 
 angular.module('app',
 [
@@ -28,9 +30,11 @@ angular.module('app',
 .controller	( 'titleCtrl'		, titleCtrl )
 .controller	( 'menuCtrl'		, menuCtrl )
 .controller	( 'leftCtrl'		, leftCtrl )
-.controller	( 'mainCtrl'		, mainCtrl )
 .controller	( 'rightCtrl'		, rightCtrl )
 .controller	( 'previewCtrl'		, previewCtrl )
 .controller	( 'bottomCtrl'		, bottomCtrl )
+
+.controller	( 'mainCtrl'		, mainCtrl )
+.controller	( 'configCtrl'		, configCtrl )
 
 ;

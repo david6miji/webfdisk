@@ -7,7 +7,11 @@ import codeMirror from 'codemirror/lib/codemirror.js';
 
 export default class mainCtrl {
 	constructor($scope, $http, $interval) {
-		console.log( 'CALL mainCtrl' );
+		console.log( 'CALL mainCtrl()' );
+		$scope.init = function(){
+			console.log('mainCtrl:init()');
+		}	
+		
 		
 		/*
 		

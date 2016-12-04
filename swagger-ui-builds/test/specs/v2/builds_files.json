@@ -1,0 +1,212 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Swagger Build filesystems API"
+  },
+  "host": "192.168.0.117:7000",
+  "paths": {
+    "/builds/v1/filesystems": {
+      "get": {
+        "tags": [
+          "Files"
+        ],
+		"summary": "생성된 파일 시스템 목록을 얻는다.",
+		"responses": {
+          "200": {
+            "description": "성공적으로 목록을 얻음.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/fileState"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Files"
+        ],
+		"summary": "파일 시스템을 생성한다.",
+		"parameters": [
+          {
+            "in": "body",
+            "name": "createOption",
+            "description": "생성 조건",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createOption"
+            }
+          }
+        ]
+    },
+	"/builds/v1/filesystems/": {
+		"responses": {
+          "200": {
+            "description": "정상적으로 생성되었습니다.",
+            "schema": {
+              "$ref": "#/definitions/fileState"
+            }
+          },
+          "400": {
+            "description": "생성에 필요한 파라메터가 잘못되었습니다"
+          }
+        }
+      }
+    },
+	"/builds/v1/filesystems/{id}": {
+      "get": {
+        "tags": [
+          "Files"
+        ],
+		"summary": "파일 시스템 상태를 얻는다.",
+		"parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "정보를 얻고자 하는 생성된 파일 시스템 ID. 테스트를 위해서는 0 을 사용한다.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+		"responses": {
+          "200": {
+            "description": "정상적으로 정보를 얻었습니다.",
+            "schema": {
+              "$ref": "#/definitions/fileState"
+            }
+          },
+          "404": {
+            "description": "해당 ID 는 존재하지 않습니다."
+          }
+        }
+      },
+	  "put": {
+        "tags": [
+          "Files"
+        ],
+		"summary": "파일 시스템 상태를 수정한다.",
+		"parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "수정 하고자 하는 파일 시스템 ID. 테스트를 위해 0 을 사용한다.",
+            "required": true,
+            "type": "string"
+          },
+		  {
+            "in": "body",
+            "name": "modifyOption",
+            "description": "수정 옵션",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/modifyOption"
+            }
+          }
+        ],
+		"responses": {
+          "200": {
+            "description": "정상적으로 수정되었습니다.",
+            "schema": {
+              "$ref": "#/definitions/fileState"
+            }
+          },
+		  "400": {
+            "description": "수정에 필요한 파라메터가 없습니다"
+          },
+          "404": {
+            "description": "해당 ID 는 존재하지 않습니다."
+          },
+		  "405": {
+            "description": "ID 에 해당하는 정보가 다릅니다.."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Files"
+        ],
+		"summary": "파일 시스템 상태를 삭제한다.",
+		"parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "삭제 하고자 하는 파일 시스템 ID. 테스트를 위해 0 을 사용한다.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+		"responses": {
+          "200": {
+            "description": "정상적으로 삭제되었습니다.",
+            "schema": {
+              "$ref": "#/definitions/fileState"
+            }
+          },
+          "404": {
+            "description": "해당 ID 는 존재하지 않습니다."
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "createOption": {
+	  "properties": {
+        "name": {
+          "type": "string",
+          "example": "test.c"
+        },
+        "user_id": {
+          "type": "string",
+          "example": "0001"
+        },
+        "project_id": {
+          "type": "string",
+          "example": "0001"
+        }
+	  }
+	},
+	"State": {
+	  "properties": {
+		"id": {
+          "type": "string",
+          "example": 0
+        },
+        "name": {
+          "type": "string",
+          "example": "am335x basic file system"
+        },
+        "user_id": {
+          "type": "string",
+          "example": "0001"
+        },
+        "project_id": {
+          "type": "string",
+          "example": "0001"
+        }
+	  }
+	},
+	"modifyOption": {
+	  "properties": {
+        "id": {
+          "type": "string",
+          "example": 0
+        },
+		"name": {
+          "type": "string",
+          "example": "am335x basic file system"
+        },
+        "user_id": {
+          "type": "string",
+          "example": "0001"
+        },
+        "project_id": {
+          "type": "string",
+          "example": "0001"
+        }
+	  }
+	}
+  }
+}
+

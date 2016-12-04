@@ -2,7 +2,10 @@
 
 export default class rightCtrl {
 	constructor($scope, $http, $interval) {
-		console.log( 'CALL rightCtrl' );
+		console.log( 'CALL rightCtrl()' );
+		$scope.init = function(){
+			console.log('rightCtrl:init()');
+		}	
 
 	}
 }

@@ -18,7 +18,7 @@ import webpackConfig from './webpack.config.js';
 import BS from 'browser-sync';
 let browserSync = BS.create();
 
-//import mocha from 'gulp-mocha';
+import mocha from 'gulp-mocha';
 
 let cache = new Cache();
 
@@ -140,7 +140,7 @@ gulp.task('test', () => {
 });
 
 gulp.task('testone', () => {
-	return gulp.src(['test_one/build_api.js'], { read: false })
+	return gulp.src(['test_one/filesystems_api.js'], { read: false })
         .pipe(mocha({ reporter: 'spec' }))
         .on('error', gutil.log);
 });

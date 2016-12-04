@@ -2,7 +2,10 @@
 
 export default class previewCtrl {
 	constructor($scope, $http, $interval) {
-		console.log( 'CALL previewCtrl' );
+		console.log( 'CALL previewCtrl()' );
+		$scope.init = function(){
+			console.log('previewCtrl:init()');
+		}	
 		
 		$('#grid').w2grid({ 
 			name: 'grid', 

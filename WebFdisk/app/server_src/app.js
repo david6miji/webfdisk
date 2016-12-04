@@ -8,8 +8,11 @@ var cookieParser 	= require('cookie-parser');
 var bodyParser 		= require('body-parser');
 
 var routes 			= require('./routes/index');
+
+var build_fs		= require('./routes/builds/filesystems');
 var build_driver	= require('./routes/builds/driver');
 var build_mmc		= require('./routes/builds/mmc');
+
 var udevadm			= require('./udevadm');
 
 var app = express();
@@ -22,14 +25,27 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../client_dist')));
 
+// CORS 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
+  res.header("Access-Control-Allow-Headers", 
+				"Origin, X-Requested-With, Content-Type, Accept");
+			
+  if(req.method === 'OPTIONS') {
+	res.header('Access-Control-Allow-Headers', 
+				'Origin, X-Requested-With, Content-Type, Accept, Authorization, Content-Length');
+	res.header('Access-Control-Allow-Methods', 
+				'GET, PUT, POST, DELETE, OPTIONS');
+	res.status(200).send('');
+  } else {
+	next(); 
+  }
+
 });
 
-app.use('/'			, routes);
-app.use('/builds/driver/'	, build_driver );
+app.use('/'							, routes);
+app.use('/builds/v1/filesystems/'	, build_fs );
+app.use('/builds/driver/'			, build_driver );
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

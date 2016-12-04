@@ -14,43 +14,28 @@ export default function routing
 ) {
 
 	$stateProvider
-
-	.state('main', {
-		url: '/main',
+	
+	.state('init', {
+		url: '/init',
 		views: {
-			'title':	{
-				templateUrl: '/view/title.html',
-				controller: 'titleCtrl'
-			},
-			'menu':	{
-				templateUrl: '/view/menu.html',
-				controller: 'menuCtrl'
-			},
-			'left':	{
-				templateUrl: '/view/left.html',
-				controller: 'leftCtrl'
-			},
 			'main':	{
 				templateUrl: '/view/main.html',
 				controller: 'mainCtrl'
 			},
-			'right':	{
-				templateUrl: '/view/right.html',
-				controller: 'rightCtrl'
-			},
-			'preview':	{
-				templateUrl: '/view/preview.html',
-				controller: 'previewCtrl'
-			},
-			'bottom':	{
-				templateUrl: '/view/bottom.html',
-				controller: 'bottomCtrl'
-			},
-
 		}
 	})
 
+	.state('config', {
+		url: '/config',
+		views: {
+			'main':	{
+				templateUrl: '/view/config.html',
+				controller: 'configCtrl'
+			},
+		}
+	})
+	
 	;
-
-	$urlRouterProvider.otherwise('main');
+	
+	$urlRouterProvider.otherwise('init');
 }

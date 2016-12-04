@@ -5,11 +5,11 @@ import codeMirror			from 'codemirror/lib/codemirror.js';
 
 export default class indexCtrl {
 	constructor($scope, $http, $interval, $compile) {
-		console.log( 'CALL indexCtrl' );
-
+		console.log( 'CALL indexCtrl()' );
 		$scope.init = function(){
-			console.log('init!!!');
+			console.log('indexCtrl:init()');
 			// /builds/driver/removeAll
+		}
 			
 //			$http.post('http://192.168.10.15:7000/builds/driver/removeAll')
 //			.then((res) => {
@@ -44,7 +44,6 @@ export default class indexCtrl {
 //				console.log('removeAll Error : ', res.statusText);
 //			});
 			
-		}
 	}
 }
 
