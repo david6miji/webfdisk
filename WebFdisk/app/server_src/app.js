@@ -13,6 +13,8 @@ var build_fs		= require('./routes/builds/filesystems');
 var build_driver	= require('./routes/builds/driver');
 var build_mmc		= require('./routes/builds/mmc');
 
+// var write_fs 		= require('./routes/write_fs/index');
+
 var udevadm			= require('./udevadm');
 
 var app = express();
@@ -23,7 +25,9 @@ app.use(favicon(path.join(__dirname, '../client_dist/img', 'favicon.ico')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, '../client_dist')));
+app.use(express.static( path.join(__dirname, '../client_dist')));
+
+app.use(express.static( path.join(__dirname, '../client_dist/write_fs')));
 
 // CORS 
 app.use(function(req, res, next) {
@@ -46,6 +50,9 @@ app.use(function(req, res, next) {
 app.use('/'							, routes);
 app.use('/builds/v1/filesystems/'	, build_fs );
 app.use('/builds/driver/'			, build_driver );
+
+// app.use('/write_fs/'				, write_fs );
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

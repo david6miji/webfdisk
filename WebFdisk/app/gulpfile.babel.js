@@ -1,133 +1,90 @@
 'use strict';
 
-import gulp from 'gulp';
-import gutil from 'gulp-util';
+import gulp 			from 'gulp';
+import gutil 			from 'gulp-util';
+import requireDir 		from 'require-dir';
+	
+import del 				from 'del';
+import babel 			from 'gulp-babel';
+import nodemon 			from 'gulp-nodemon';
+import Cache 			from 'gulp-file-cache';
 
-import cleanCSS from 'gulp-clean-css';
-import htmlmin from 'gulp-htmlmin';
-import imagemin from 'gulp-imagemin';
-import del from 'del';
+import webpack 			from 'gulp-webpack';
+import webpackConfig 	from './webpack.config.js';
 
-import babel from 'gulp-babel';
-import nodemon from 'gulp-nodemon';
-import Cache from 'gulp-file-cache';
+import BS 				from 'browser-sync';
+import mocha 			from 'gulp-mocha';
 
-import webpack from 'gulp-webpack';
-import webpackConfig from './webpack.config.js';
+let cache 			= new Cache();
 
-import BS from 'browser-sync';
-let browserSync = BS.create();
-
-import mocha from 'gulp-mocha';
-
-let cache = new Cache();
-
-const DIR = {
+global.CLIENT_DIR = {
     SRC		: 'client_src',
     DEST	: 'client_dist'
 };
 
-const SRC = {
-	JS		: DIR.SRC + '/js/*.js',
-    LIB		: DIR.SRC + '/lib/**/*',
-	CSS		: DIR.SRC + '/css/*.css',
-    HTML	: DIR.SRC + '/**/*.html',
-    IMAGES	: DIR.SRC + '/img/*',
-    SERVER	: 'server_src/**/*.js'
+global.SERVER_DIR = {
+    SRC		: 'server_src',
+    DEST	: 'server_dist'
 };
 
-const DEST = {
-    JS		: DIR.DEST + '/js',
-	LIB		: DIR.DEST + '/lib',
-    CSS		: DIR.DEST + '/css',
-    HTML	: DIR.DEST + '/',
-    IMAGES	: DIR.DEST + '/img',
-    SERVER	: 'server_dist'
+global.SERVER_SRC = {
+    JS		: SERVER_DIR.SRC + '/**/*.js',
 };
 
-gulp.task('clean', () => {
-    return del.sync([DIR.DEST]);
+global.browserSync 	= BS.create();
+
+requireDir(  './gulp_tasks/' );
+
+gulp.task('client:clean', () => {
+    return del.sync([CLIENT_DIR.DEST]);
 });
 
-gulp.task('webpack', () => {
-    return gulp.src( 'client_src/js/main.js')
+gulp.task('client:webpack', () => {
+    return gulp.src('')
            .pipe(webpack(webpackConfig))
-           .pipe(gulp.dest('client_dist/'))
+           .pipe(gulp.dest(CLIENT_DIR.DEST))
 		   .pipe(browserSync.reload({stream : true}))
 		   ;
 });
 
-gulp.task('lib', () => {
-    return gulp.src(SRC.LIB)
-          .pipe(gulp.dest(DEST.LIB))
-		  .pipe(browserSync.reload({stream : true}))
-		  ;
-});
-
-gulp.task('css', () => {
-    return gulp.src(SRC.CSS)
-           .pipe(cleanCSS({compatibility: 'ie8'}))
-           .pipe(gulp.dest(DEST.CSS))
-		   .pipe(browserSync.reload({stream : true}))
-		   ;
-});
-
-gulp.task('html', () => {
-    return gulp.src(SRC.HTML)
-          .pipe(htmlmin({collapseWhitespace: true}))
-          .pipe(gulp.dest(DEST.HTML))
-		  .pipe(browserSync.reload({stream : true}))
-		  ;
-});
-
-gulp.task('images', () => {
-    return gulp.src(SRC.IMAGES)
-           .pipe(imagemin())
-           .pipe(gulp.dest(DEST.IMAGES))
-		   .pipe(browserSync.reload({stream : true}))
-		   ;
-});
-
-gulp.task('babel', () => {
-    return gulp.src(SRC.SERVER)
+gulp.task('server:babel', () => {
+    return gulp.src(SERVER_SRC.JS)
            .pipe(cache.filter())
            .pipe(babel({presets: ['es2015']}))
            .pipe(cache.cache())
-           .pipe(gulp.dest(DEST.SERVER));
+           .pipe(gulp.dest(SERVER_DIR.DEST));
 });
 
-gulp.task('watch', () => {
+gulp.task( 'server:watch', () => {
     let watcher = {
-        webpack	: gulp.watch(SRC.JS, 		['webpack']),
-        // css		: gulp.watch(SRC.CSS, 		['css', 'webpack']),
-		lib		: gulp.watch(SRC.LIB, 		['lib']),
-		css		: gulp.watch(SRC.CSS, 		['css']),
-        html	: gulp.watch(SRC.HTML, 		['html']),
-        images	: gulp.watch(SRC.IMAGES, 	['images']),
-        babel	: gulp.watch(SRC.SERVER, 	['babel'])
+        babel	: gulp.watch( SERVER_SRC.JS, 	['server:babel'])
     };
 
     let notify = (event) => {
-        gutil.log('File', gutil.colors.yellow(event.path), 'was', gutil.colors.magenta(event.type));
+        gutil.log( 'File', 
+		            gutil.colors.yellow(event.path), 
+					'was', 
+					gutil.colors.magenta(event.type)
+				);
     };
 
     for(let key in watcher) {
         watcher[key].on('change', notify);
     }
+	
 });
 
-gulp.task('start', ['babel'], () => {
+gulp.task('server:start', ['server:babel'], () => {
     return nodemon({
-        script: DEST.SERVER + '/main.js',
-        watch: DEST.SERVER
+        script: SERVER_DIR.DEST + '/main.js',
+        watch: SERVER_DIR.DEST
     });
 });
 
-gulp.task('browser-sync', () => {
-	console.log( __dirname );
+gulp.task('client:browser-sync', () => {
+	
     browserSync.init(null, {
         proxy: "http://localhost:3000",
-        // files: [ __dirname + "/client_dist/**/*.*"],
         port: 7001,
     })
 
@@ -146,16 +103,19 @@ gulp.task('testone', () => {
 });
 
 gulp.task('default', [
-			'clean',
-			'webpack',
-			'lib',
-			'css',
-			'html',
-			'images',
-			'babel',
-			'watch',
-			'start',
-			'browser-sync',
+
+			'client:clean',
+			'client:webpack',
+			'server:babel',
+			
+			'index:default',
+			'writefs:default',
+			'server:watch',
+			
+			'server:start',
+
+			'client:browser-sync',
+			
 			], () => {
 
     gutil.log('Gulp is running');

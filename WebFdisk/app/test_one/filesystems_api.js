@@ -1,11 +1,12 @@
 var
-	chai 		= require( "chai" ),
+	chai 		= require( 'chai' ),
 	should 		= chai.should(),
 	expect 		= chai.expect,
 	assert 		= chai.assert,
 	chaiHttp 	= require('chai-http'),
 	fs			= require('fs'),
-	path		= require("path"),
+	path		= require('path'),
+	webSocket 	= require('ws'),
 	
 require_end;
 
@@ -13,12 +14,13 @@ process.env.NODE_ENV = 'test';
 
 chai.use(chaiHttp);
 
-var urlBase = 'http://localhost:3000';
+var urlBase 	= 'http://localhost:3000';
+var urlBaseWS 	= 'ws://localhost:3000';
 
 describe.only('파일시스템 API 를 검사한다.', function() {
 	it('모든 파일 시스템을 삭제한다.', function (done) {
 		chai.request(urlBase)
-			.get('/builds/v1/filesystems/removeAll')
+			.post('/builds/v1/filesystems/removeAll')
 			.end(function(err, res) {
 				expect(err).to.be.null;
 				res.should.have.status(200);
@@ -324,7 +326,90 @@ describe.only('파일시스템 API 를 검사한다.', function() {
 		
 	});
 	
-	it('파일시스템 상태를 삭제한다.', function (done) {
+	it('파일시스템 하나를 생성한다.', function (done) {
+		var createOption = {
+			"name"		: "AM335x Base File System",
+			"user_id"	: "0001",
+			"project_id": "0001",
+		};
+
+		chai.request(urlBase)
+			.post('/builds/v1/filesystems')
+			.send( createOption )
+			.end(function(err, res) {
+				expect(err).to.be.null;
+				res.should.have.status(200);
+				res.should.be.json;
+				res.body.should.be.a('object');
+				done();                  
+			});		
+	});
+	
+	it('파일시스템 목록 수가 2 이어야 한다.', function (done) {
+		chai.request(urlBase)
+			.get('/builds/v1/filesystems')
+			.end(function(err, res) {
+				expect(err).to.be.null;
+				res.should.have.status(200);
+				res.should.be.json;
+				res.body.should.be.a('array');
+				var list = res.body;
+				assert.equal( 2, list.length );
+				done();
+			});
+		
+	});
+	
+	
+	it('ID 가 0인 파일시스템 웹소켓 접속을 확인한다.', function (done) {
+		
+		var ws = new webSocket( urlBaseWS + '/builds/v1/filesystems/0' );
+		var testObj = { cmd : "echo", id : 0, data : 'Check Data' };
+		
+		ws.on('open', function open() {
+			ws.send(JSON.stringify(testObj));
+		});
+
+		ws.on('message', function(data, flags) {
+
+			expect(data).to.be.a( 'string' );
+			var msgObj	= JSON.parse(data);
+			
+			assert.equal( msgObj.cmd , 'ack' );
+			assert.equal( msgObj.id  , testObj.id );
+			assert.equal( msgObj.data, testObj.data );
+			
+			ws.close();
+			done();
+		});
+		
+	});
+
+	it('ID 가 1인 파일시스템 웹소켓 접속을 확인한다.', function (done) {
+		
+		var ws = new webSocket( urlBaseWS + '/builds/v1/filesystems/1' );
+		var testObj = { cmd : "echo", id : 1, data : 'Check Data' };
+		
+		ws.on('open', function open() {
+			ws.send(JSON.stringify(testObj));
+		});
+
+		ws.on('message', function(data, flags) {
+			
+			expect(data).to.be.a( 'string' );
+			var msgObj	= JSON.parse(data);
+			
+			assert.equal( msgObj.cmd , 'ack' );
+			assert.equal( msgObj.id  , testObj.id );
+			assert.equal( msgObj.data, testObj.data );
+			
+			ws.close();
+			done();
+		});
+		
+	});
+	
+	it('ID 가 0 인 파일시스템 상태를 삭제한다.', function (done) {
 		chai.request(urlBase)
 			.delete('/builds/v1/filesystems/0')
 			.end(function(err, res) {
@@ -340,6 +425,32 @@ describe.only('파일시스템 API 를 검사한다.', function() {
 	it('삭제된 파일 상태를 확인한다.', function (done) {
 		chai.request(urlBase)
 			.get('/builds/v1/filesystems/0')
+			.end(function(err, res) {
+				expect(err).to.not.null;
+				res.should.have.status(404);
+				res.should.be.json;
+				res.body.should.be.a('object');
+				done();
+			});
+		
+	});
+	
+	it('ID 가 1 인 파일시스템 상태를 삭제한다.', function (done) {
+		chai.request(urlBase)
+			.delete('/builds/v1/filesystems/1')
+			.end(function(err, res) {
+				expect(err).to.be.null;
+				res.should.have.status(200);
+				res.should.be.json;
+				res.body.should.be.a('object');
+				done();
+			});
+		
+	});
+	
+	it('삭제된 파일 상태를 확인한다.', function (done) {
+		chai.request(urlBase)
+			.get('/builds/v1/filesystems/1')
 			.end(function(err, res) {
 				expect(err).to.not.null;
 				res.should.have.status(404);

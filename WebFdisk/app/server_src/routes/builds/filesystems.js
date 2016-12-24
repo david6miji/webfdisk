@@ -1,7 +1,6 @@
-
-
 var
 	express 	= require('express'),
+	expressWs   = require('express-ws')(express()),
 	R 			= express.Router(),
 
 end_require= true;
@@ -24,6 +23,8 @@ var createFSObj = function(){
 	fsObj.name			= null;
 	fsObj.user_id		= null;
 	fsObj.project_id	= null;
+	
+	fsObj.webSocket		= null;
 
 	return fsObj;
 }
@@ -46,9 +47,9 @@ var SendError = function( res, code, message ){
 }
 
 // GET	/builds/v1/filesystems/removeAll : 모든 파일시스템을 삭제한다.
-R.route('/removeAll').get(function(req, res, next) {
+R.route('/removeAll').post(function(req, res, next) {
 
-	console.log( 'CALL API GET /builds/v1/filesystems/removeAll' ); 
+	console.log( 'CALL API POST /builds/v1/filesystems/removeAll' ); 
 
 	initFS();
 
@@ -183,7 +184,7 @@ R.route('/:id').put(function(req, res, next) {
 // DELETE 	/builds/v1/filesystems/{id}  	: 파일 상태 삭제
 R.route('/:id').delete(function(req, res, next) {
 
-	console.log( 'CALL API DELETE 	/builds/v1/filesystems/{id}' ); 
+	console.log( 'CALL API DELETE /builds/v1/filesystems/{id}' ); 
 	console.log('id:', req.params.id);
 
 	var fsObj = fsObjs[req.params.id];
@@ -199,6 +200,47 @@ R.route('/:id').delete(function(req, res, next) {
 
 	res.json(ack);
 		
+});
+
+R.ws('/:id', function(ws, req, next) {
+	console.log( 'CALL API WS /builds/v1/filesystems/{id}' ); 
+	console.log( 'id:', req.params.id );
+	
+	var fsObj	= fsObjs[req.params.id];
+	
+	if ( typeof fsObj	 === "undefined" ) {
+		console.log('Unknown Connection');
+		return;
+	}
+	
+	fsObj.webSocket	= ws;
+
+	ws.on('message', function(msg) {
+
+		console.log('id:', req.params.id);
+		console.log( msg );
+
+		var msgObj	= JSON.parse(msg);
+
+		console.log( 'msgObj.cmd = ', msgObj.cmd );
+
+		switch(msgObj.cmd) {
+		case 'echo':
+			var echoData = msgObj;
+			echoData.cmd = 'ack';
+			echoData.id = fsObj.id;
+
+			ws.send(JSON.stringify(echoData));
+			break;
+		default:
+
+			console.log('filesystem.js: Unknown Command ws req');
+			break;
+
+		}
+
+	});
+
 });
 
 module.exports = R;

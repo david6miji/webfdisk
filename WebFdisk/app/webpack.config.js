@@ -3,8 +3,10 @@ var webpack = require('webpack');
 module.exports = {
     
 	entry: {
-        beforeAngular	: "./client_src/js/beforeAngular.js",
-        main			: "./client_src/js/main.js"
+        beforeAngular			 : "./client_src/js/beforeAngular.js",
+        main					 : "./client_src/js/main.js",
+		"write_fs/beforeAngular" : "./client_src/write_fs/js/beforeAngular.js",
+		"write_fs/main" 		 : "./client_src/write_fs/js/main.js",
     },
     output: {
         filename		: "[name].entry.js"

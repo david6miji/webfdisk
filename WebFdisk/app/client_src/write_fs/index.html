@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Write File System</title>
+
+</head>
+
+<body ng-controller="bodyCtrl"">
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+	<div class="container">
+		<div class="navbar-header">
+			<a class="navbar-brand">AM335x Base Image</a>
+			<p class="navbar-text">
+			   <b>- Writing a File System to microSD card</b>
+			</p>
+       </div>
+		<div class="navbar-collapse collapse">
+			<ul class="nav navbar-nav navbar-right">
+				<li> <a href="#">Close</a></li>
+           </ul>
+       </div>
+	</div>
+</div>
+
+<br>
+<br>
+<br>
+	
+<div class="container">
+	<div ui-view></div>
+</div>
+	
+<script src="/write_fs/beforeAngular.entry.js"></script>
+<script src="/write_fs/main.entry.js"></script>
+
+<link rel="stylesheet" type="text/css" href="/write_fs/css/index.css">
+	
+</body>
+</html>

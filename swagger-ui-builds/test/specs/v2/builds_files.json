@@ -8,16 +8,16 @@
     "/builds/v1/filesystems": {
       "get": {
         "tags": [
-          "Files"
+          "Filesystems"
         ],
-		"summary": "생성된 파일 시스템 목록을 얻는다.",
+		"summary": "생성된 파일시스템 목록을 얻는다.",
 		"responses": {
           "200": {
             "description": "성공적으로 목록을 얻음.",
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/fileState"
+                "$ref": "#/definitions/filesystems/state"
               }
             }
           }
@@ -25,9 +25,9 @@
       },
       "post": {
         "tags": [
-          "Files"
+          "Filesystems"
         ],
-		"summary": "파일 시스템을 생성한다.",
+		"summary": "파일시스템을 생성한다.",
 		"parameters": [
           {
             "in": "body",
@@ -35,36 +35,34 @@
             "description": "생성 조건",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/createOption"
+              "$ref": "#/definitions/filesystems/createOption"
             }
           }
-        ]
-    },
-	"/builds/v1/filesystems/": {
+        ],
 		"responses": {
           "200": {
             "description": "정상적으로 생성되었습니다.",
             "schema": {
-              "$ref": "#/definitions/fileState"
+              "$ref": "#/definitions/filesystems/state"
             }
           },
           "400": {
             "description": "생성에 필요한 파라메터가 잘못되었습니다"
           }
         }
-      }
+	  }
     },
 	"/builds/v1/filesystems/{id}": {
       "get": {
         "tags": [
-          "Files"
+          "Filesystems"
         ],
-		"summary": "파일 시스템 상태를 얻는다.",
+		"summary": "파일시스템 상태를 얻는다.",
 		"parameters": [
           {
             "in": "path",
             "name": "id",
-            "description": "정보를 얻고자 하는 생성된 파일 시스템 ID. 테스트를 위해서는 0 을 사용한다.",
+            "description": "정보를 얻고자 하는 생성된 파일시스템 ID. 테스트를 위해서는 0 을 사용한다.",
             "required": true,
             "type": "string"
           }
@@ -73,7 +71,7 @@
           "200": {
             "description": "정상적으로 정보를 얻었습니다.",
             "schema": {
-              "$ref": "#/definitions/fileState"
+              "$ref": "#/definitions/filesystems/state"
             }
           },
           "404": {
@@ -83,14 +81,14 @@
       },
 	  "put": {
         "tags": [
-          "Files"
+          "Filesystems"
         ],
-		"summary": "파일 시스템 상태를 수정한다.",
+		"summary": "파일시스템 상태를 수정한다.",
 		"parameters": [
           {
             "in": "path",
             "name": "id",
-            "description": "수정 하고자 하는 파일 시스템 ID. 테스트를 위해 0 을 사용한다.",
+            "description": "수정 하고자 하는 파일시스템 ID. 테스트를 위해 0 을 사용한다.",
             "required": true,
             "type": "string"
           },
@@ -100,7 +98,7 @@
             "description": "수정 옵션",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/modifyOption"
+              "$ref": "#/definitions/filesystems/modifyOption"
             }
           }
         ],
@@ -108,7 +106,7 @@
           "200": {
             "description": "정상적으로 수정되었습니다.",
             "schema": {
-              "$ref": "#/definitions/fileState"
+              "$ref": "#/definitions/filesystems/state"
             }
           },
 		  "400": {
@@ -124,14 +122,14 @@
       },
       "delete": {
         "tags": [
-          "Files"
+          "Filesystems"
         ],
-		"summary": "파일 시스템 상태를 삭제한다.",
+		"summary": "파일시스템 상태를 삭제한다.",
 		"parameters": [
           {
             "in": "path",
             "name": "id",
-            "description": "삭제 하고자 하는 파일 시스템 ID. 테스트를 위해 0 을 사용한다.",
+            "description": "삭제 하고자 하는 파일시스템 ID. 테스트를 위해 0 을 사용한다.",
             "required": true,
             "type": "string"
           }
@@ -140,7 +138,7 @@
           "200": {
             "description": "정상적으로 삭제되었습니다.",
             "schema": {
-              "$ref": "#/definitions/fileState"
+              "$ref": "#/definitions/filesystems/state"
             }
           },
           "404": {
@@ -148,65 +146,66 @@
           }
         }
       }
-    }
+	}
   },
   "definitions": {
-    "createOption": {
+	"filesystems/createOption": {
 	  "properties": {
-        "name": {
-          "type": "string",
-          "example": "test.c"
-        },
-        "user_id": {
-          "type": "string",
-          "example": "0001"
-        },
-        "project_id": {
-          "type": "string",
-          "example": "0001"
-        }
+		"name": {
+		  "type": "string",
+		  "example": "test.c"
+		},
+		"user_id": {
+		  "type": "string",
+		  "example": "0001"
+		},
+		"project_id": {
+		  "type": "string",
+		  "example": "0001"
+		}
 	  }
 	},
-	"State": {
+	"filesystems/state": {
 	  "properties": {
 		"id": {
-          "type": "string",
-          "example": 0
-        },
-        "name": {
-          "type": "string",
-          "example": "am335x basic file system"
-        },
-        "user_id": {
-          "type": "string",
-          "example": "0001"
-        },
-        "project_id": {
-          "type": "string",
-          "example": "0001"
-        }
+		  "type": "string",
+		  "example": 0
+		},
+		"name": {
+		  "type": "string",
+		  "example": "am335x basic file system"
+		},
+		"user_id": {
+		  "type": "string",
+		  "example": "0001"
+		},
+		"project_id": {
+		  "type": "string",
+		  "example": "0001"
+		}
 	  }
 	},
-	"modifyOption": {
+	"filesystems/modifyOption": {
 	  "properties": {
-        "id": {
-          "type": "string",
-          "example": 0
-        },
+		"id": {
+		  "type": "string",
+		  "example": 0
+		},
 		"name": {
-          "type": "string",
-          "example": "am335x basic file system"
-        },
-        "user_id": {
-          "type": "string",
-          "example": "0001"
-        },
-        "project_id": {
-          "type": "string",
-          "example": "0001"
-        }
+		  "type": "string",
+		  "example": "am335x basic file system"
+		},
+		"user_id": {
+		  "type": "string",
+		  "example": "0001"
+		},
+		"project_id": {
+		  "type": "string",
+		  "example": "0001"
+		}
 	  }
 	}
   }
 }
+
 
