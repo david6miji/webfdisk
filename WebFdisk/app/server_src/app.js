@@ -13,6 +13,8 @@ var build_fs		= require('./routes/builds/filesystems');
 var build_driver	= require('./routes/builds/driver');
 var build_mmc		= require('./routes/builds/mmc');
 
+var micro_sd		= require('./routes/dev/micro_sd');
+
 // var write_fs 		= require('./routes/write_fs/index');
 
 var udevadm			= require('./udevadm');
@@ -47,9 +49,11 @@ app.use(function(req, res, next) {
 
 });
 
+
 app.use('/'							, routes);
 app.use('/builds/v1/filesystems/'	, build_fs );
 app.use('/builds/driver/'			, build_driver );
+app.use('/dev/v1/micro_sd/'			, micro_sd );
 
 // app.use('/write_fs/'				, write_fs );
 

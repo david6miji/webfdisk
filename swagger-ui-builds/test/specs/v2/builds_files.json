@@ -146,6 +146,355 @@
           }
         }
       }
+	},
+    "/dev/v1/micro_sd": {
+      "get": {
+        "tags": [
+          "Devices Micro SD CARD"
+        ],
+		"summary": "등록된 마이크로 SD 카드 목록",
+		"responses": {
+          "200": {
+            "description": "성공적으로 목록을 얻음.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/dev/micro_sd/state"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Devices Micro SD CARD"
+        ],
+		"summary": "마이크로 SD 카드 등록",
+		"parameters": [
+          {
+            "in": "body",
+            "name": "createOption",
+            "description": "등록 사항",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/dev/micro_sd/createOption"
+            }
+          }
+        ],
+		"responses": {
+          "200": {
+            "description": "정상적으로 등록 되었습니다.",
+            "schema": {
+              "$ref": "#/definitions/dev/micro_sd/state"
+            }
+          },
+          "400": {
+            "description": "등록에 필요한 파라메터가 잘못되었습니다"
+          }
+        }
+	  }
+    },
+	"/dev/v1/micro_sd/{id}": {
+	  "delete": {
+        "tags": [
+          "Devices Micro SD CARD"
+        ],
+		"summary": "마이크로 SD 카드 삭제",
+		"parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "삭제 하고자 하는 마이크로 SD 카드 ID. 테스트를 위해 0 을 사용한다.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+		"responses": {
+          "200": {
+            "description": "정상적으로 삭제되었습니다.",
+            "schema": {
+              "$ref": "#/definitions/dev/micro_sd/state"
+            }
+          },
+          "404": {
+            "description": "해당 ID 는 존재하지 않습니다."
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Devices Micro SD CARD"
+        ],
+		"summary": "마이크로 SD 카드 정보 얻기",
+		"parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "정보를 얻고자 하는 생성된 마이크로 SD 카드 ID. 테스트를 위해서는 0 을 사용한다.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+		"responses": {
+          "200": {
+            "description": "정상적으로 정보를 얻었습니다.",
+            "schema": {
+              "$ref": "#/definitions/dev/micro_sd/state"
+            }
+          },
+          "404": {
+            "description": "해당 ID 는 존재하지 않습니다."
+          }
+        }
+      },
+	  "put": {
+        "tags": [
+          "Devices Micro SD CARD"
+        ],
+		"summary": "마이크로 SD 카드 수정",
+		"parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "수정 하고자 하는 마이크로 SD 카드 ID. 테스트를 위해 0 을 사용한다.",
+            "required": true,
+            "type": "string"
+          },
+		  {
+            "in": "body",
+            "name": "modifyOption",
+            "description": "수정 옵션",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/dev/micro_sd/modifyOption"
+            }
+          }
+        ],
+		"responses": {
+          "200": {
+            "description": "정상적으로 수정되었습니다.",
+            "schema": {
+              "$ref": "#/definitions/dev/micro_sd/state"
+            }
+          },
+		  "400": {
+            "description": "수정에 필요한 파라메터가 없습니다"
+          },
+          "404": {
+            "description": "해당 ID 는 존재하지 않습니다."
+          },
+		  "405": {
+            "description": "ID 에 해당하는 정보가 다릅니다.."
+          }
+        }
+      }
+	},
+    "/dev/v1/micro_sd/login": {
+      "post": {
+        "tags": [
+          "Devices Micro SD CARD"
+        ],
+		"summary": "마이크로 SD 카드 로그인",
+		"parameters": [
+          {
+            "in": "body",
+            "name": "openOption",
+            "description": "장치 로그인 옵션",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/dev/micro_sd/loginOption"
+            }
+          }
+        ],
+		"responses": {
+          "200": {
+            "description": "정상적으로 로그인 되었습니다.",
+            "schema": {
+              "$ref": "#/definitions/dev/micro_sd/state"
+            }
+          },
+          "400": {
+            "description": "로그인에 필요한 파라메터가 잘못되었습니다"
+          }
+        }
+	  }
+    },
+    "/dev/v1/micro_sd/{id}/logout": {
+      "post": {
+        "tags": [
+          "Devices Micro SD CARD"
+        ],
+		"summary": "마이크로 SD 카드 로그아웃",
+		"parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "로그아웃 하고자 하는 마이크로 SD 카드 ID. 테스트를 위해 0 을 사용한다.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+		"responses": {
+          "200": {
+            "description": "정상적으로 로그아웃 되었습니다.",
+            "schema": {
+              "$ref": "#/definitions/dev/micro_sd/state"
+            }
+          },
+          "404": {
+            "description": "해당 ID 는 존재하지 않습니다."
+          }
+        }
+	  }
+    },
+	"/dev/v1/micro_sd/{id}/insert": {
+      "post": {
+        "tags": [
+          "Devices Micro SD CARD"
+        ],
+		"summary": "마이크로 SD 카드 삽입 통보",
+		"parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "삽입 통보 마이크로 SD 카드 ID. 테스트를 위해 0 을 사용한다.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "CardInfo",
+            "description": "삽입된 카드 정보",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/dev/micro_sd/cardInfo"
+            }
+          }
+        ],
+		"responses": {
+          "200": {
+            "description": "정상적으로 삽입 통보 되었습니다.",
+            "schema": {
+              "$ref": "#/definitions/dev/micro_sd/state"
+            }
+          },
+          "404": {
+            "description": "해당 ID 는 존재하지 않습니다."
+          }
+        }
+	  }
+    },
+	"/dev/v1/micro_sd/{id}/remove": {
+      "post": {
+        "tags": [
+          "Devices Micro SD CARD"
+        ],
+		"summary": "마이크로 SD 카드 제거 통보",
+		"parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "제거 통보 마이크로 SD 카드 ID. 테스트를 위해 0 을 사용한다.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+		"responses": {
+          "200": {
+            "description": "정상적으로 제거 통보 되었습니다.",
+            "schema": {
+              "$ref": "#/definitions/dev/micro_sd/state"
+            }
+          },
+          "404": {
+            "description": "해당 ID 는 존재하지 않습니다."
+          }
+        }
+	  }
+    },
+	"/dev/v1/micro_sd/api": {
+      "get": {
+        "tags": [
+          "Devices Micro SD CARD"
+        ],
+		"summary": "마이크로 SD 카드 접속 API 목록",
+		"responses": {
+          "200": {
+            "description": "성공적으로 목록을 얻음.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/dev/micro_sd/apiState"
+              }
+            }
+          }
+        }
+      }
+    },
+	"/dev/v1/micro_sd/api/open": {
+      "post": {
+        "tags": [
+          "Devices Micro SD CARD"
+        ],
+		"summary": "마이크로 SD 카드 오픈",
+		"parameters": [
+          {
+            "in": "body",
+            "name": "openOption",
+            "description": "장치 오픈 옵션",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/dev/micro_sd/openOption"
+            }
+          }
+        ],
+		"responses": {
+          "200": {
+            "description": "정상적으로 오픈 되었습니다.",
+            "schema": {
+              "$ref": "#/definitions/dev/micro_sd/apiState"
+            }
+          },
+          "400": {
+            "description": "오픈에 필요한 파라메터가 잘못되었습니다"
+          }
+        }
+	  }
+    },
+    "/dev/v1/micro_sd/api/{id}/{api_id}/close": {
+      "post": {
+        "tags": [
+          "Devices Micro SD CARD"
+        ],
+		"summary": "마이크로 SD 카드 오픈",
+		"parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "클로즈 하고자 하는 마이크로 SD 카드 ID. 테스트를 위해 0 을 사용한다.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "api_id",
+            "description": "클로즈 하고자 하는 마이크로 SD 카드 API ID. 테스트를 위해 0 을 사용한다.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+		"responses": {
+          "200": {
+            "description": "정상적으로 클로즈 되었습니다.",
+            "schema": {
+              "$ref": "#/definitions/dev/micro_sd/apiState"
+            }
+          },
+          "404": {
+            "description": "해당 ID 는 존재하지 않습니다."
+          }
+        }
+	  }
 	}
   },
   "definitions": {
@@ -202,6 +551,142 @@
 		"project_id": {
 		  "type": "string",
 		  "example": "0001"
+		}
+	  }
+	},
+	"dev/micro_sd/state": {
+	  "properties": {
+		"id": {
+		  "type": "string",
+		  "example": "001"
+		},
+		"name": {
+		  "type": "string",
+		  "example": "유영창 노트북 SD 카드"
+		},
+		"vendor_id": {
+		  "type": "string",
+		  "example": "FA001"
+		},
+		"product_id": {
+		  "type": "string",
+		  "example": "MSD001"
+		},
+		"serial_number": {
+		  "type": "string",
+		  "example": "0001"
+		}
+	  }
+	},
+	"dev/micro_sd/createOption": {
+	  "properties": {
+		"name": {
+		  "type": "string",
+		  "example": "유영창 노트북 SD 카드"
+		},
+		"vendor_id": {
+		  "type": "string",
+		  "example": "FA001"
+		},
+		"product_id": {
+		  "type": "string",
+		  "example": "MSD001"
+		},
+		"serial_number": {
+		  "type": "string",
+		  "example": "0001"
+		}
+	  }
+	},
+	"dev/micro_sd/modifyOption": {
+	  "properties": {
+		"id": {
+		  "type": "string",
+		  "example": "001"
+		},
+		"name": {
+		  "type": "string",
+		  "example": "유영창 노트북 SD 카드"
+		},
+		"vendor_id": {
+		  "type": "string",
+		  "example": "FA001"
+		},
+		"product_id": {
+		  "type": "string",
+		  "example": "MSD001"
+		},
+		"serial_number": {
+		  "type": "string",
+		  "example": "0001"
+		}
+	  }
+	},
+	"dev/micro_sd/openOption": {
+	  "properties": {
+		"vendor_id": {
+		  "type": "string",
+		  "example": "FA001"
+		},
+		"product_id": {
+		  "type": "string",
+		  "example": "MSD001"
+		},
+		"serial_number": {
+		  "type": "string",
+		  "example": "0001"
+		}
+	  }
+	},
+	"dev/micro_sd/apiState": {
+	  "properties": {
+		"id": {
+		  "type": "string",
+		  "example": "001"
+		},
+		"api_id": {
+		  "type": "string",
+		  "example": "001"
+		},
+		"name": {
+		  "type": "string",
+		  "example": "유영창 노트북 SD 카드"
+		},
+		"vendor_id": {
+		  "type": "string",
+		  "example": "FA001"
+		},
+		"product_id": {
+		  "type": "string",
+		  "example": "MSD001"
+		},
+		"serial_number": {
+		  "type": "string",
+		  "example": "0001"
+		}
+	  }
+	},
+	"dev/micro_sd/loginOption": {
+	  "properties": {
+		"vendor_id": {
+		  "type": "string",
+		  "example": "FA001"
+		},
+		"product_id": {
+		  "type": "string",
+		  "example": "MSD001"
+		},
+		"serial_number": {
+		  "type": "string",
+		  "example": "0001"
+		}
+	  }
+	},
+	"dev/micro_sd/cardInfo": {
+	  "properties": {
+		"size": {
+		  "type": "integer",
+		  "example": 400000000000
 		}
 	  }
 	}

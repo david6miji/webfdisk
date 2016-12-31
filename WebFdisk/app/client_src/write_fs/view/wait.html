@@ -6,12 +6,22 @@
 		<p>마이크로 SD 카드가 삽입되어 있다면 제거 후 다시 삽입하십시오.</p>
 	</blockquote>
 	
-	<br>
-	<br>
+	<form class="form-inline">
+		<div class="form-group">
+			<div class="input-group">
+				<div class="input-group-addon">sd 카드</div>
+				<input type="text" class="form-control" 
+						 id="sdName" ng-model="sdName" 
+						 placeholder="대기중">
+			</div>
+		</div>
+	</form>
+	
 	<br>
 	<br>
 	<button type="button" 
 	        class="btn btn-primary btn-lg btn-block"
+			ng-disabled="true"
 			ng-click="next()" >
 			Writing..
 	</button>

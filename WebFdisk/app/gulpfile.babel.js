@@ -97,7 +97,7 @@ gulp.task('test', () => {
 });
 
 gulp.task('testone', () => {
-	return gulp.src(['test_one/filesystems_api.js'], { read: false })
+	return gulp.src(['test_one/dev_api.js'], { read: false })
         .pipe(mocha({ reporter: 'spec' }))
         .on('error', gutil.log);
 });
