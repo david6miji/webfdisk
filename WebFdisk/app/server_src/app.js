@@ -16,13 +16,12 @@ var build_mmc		= require('./routes/builds/mmc');
 var micro_sd		= require('./routes/dev/micro_sd');
 
 // var write_fs 		= require('./routes/write_fs/index');
-
-var udevadm			= require('./udevadm');
+// var udevadm			= require('./udevadm');
 
 var app = express();
 
 app.use(favicon(path.join(__dirname, '../client_dist/img', 'favicon.ico')));
-// app.use(logger('dev'));
+app.use(logger('dev'));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

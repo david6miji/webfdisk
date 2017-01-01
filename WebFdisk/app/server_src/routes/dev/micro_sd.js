@@ -11,14 +11,27 @@ var msdObjs		= {};
 var msdObjs_id	= 0;
 
 var initMSD = function(){
+	
 	msdObjs		= {};
 	msdObjs_id	= 0;
+	
+	var msdObj 			= createMSDObj();
+	
+		msdObj.name				= "시험용";
+		msdObj.vendor_id		= "FA000";
+		msdObj.product_id		= "MSD000";
+		msdObj.serial_number	= "0000";
+		
+	appendMSDObj( msdObj );
+	
 }
 
 var getMsdObjByVPS = function( vps ){
 
+	var obj;
+	
 	for(var key in msdObjs) {
-		var obj = msdObjs[key];
+		obj = msdObjs[key];
 		if(  obj.vendor_id 		===  vps.vendor_id
 		  && obj.product_id 	===  vps.product_id
 		  && obj.serial_number	===  vps.serial_number ) {
@@ -26,7 +39,7 @@ var getMsdObjByVPS = function( vps ){
 		}
 	}
 	
-	return null ;
+	return obj;
 }
 
 var createMSDObj = function(){
@@ -45,6 +58,13 @@ var createMSDObj = function(){
 	msdObj.webSocket		= null;
 
 	return msdObj;
+}
+
+var appendMSDObj = function(obj){
+
+	msdObjs[obj.id] 	= obj;
+	msdObjs_id 		 	= msdObjs_id + 1;
+	
 }
 
 var createApiObj = function(api_id){
@@ -170,19 +190,18 @@ R.route('/').post(function(req, res, next) {
 	}
 	
 	var msdObj 			= createMSDObj();
-
+	
 		msdObj.name				= createOption.name;
 		msdObj.vendor_id		= createOption.vendor_id;
 		msdObj.product_id		= createOption.product_id;
 		msdObj.serial_number	= createOption.serial_number;
 
-	
-	msdObjs[msdObj.id] 	= msdObj;
-	msdObjs_id 		 	= msdObjs_id + 1;
+	appendMSDObj( msdObj );
 	
 	var ack = getMSDState(msdObj);
-	
+	console.log( 'PASS 3' );	
 	res.json(ack);
+	console.log( 'PASS 4' );	
 	
 });
 
@@ -276,7 +295,7 @@ R.route('/:id').delete(function(req, res, next) {
 R.route('/login').post(function(req, res, next) {
 
 	console.log( 'CALL API POST /dev/v1/micro_sd/login' );
-	
+
 	// 파라메터를 얻는다.
  	var loginOption = req.body;
 	if ( !loginOption )  { 
@@ -306,7 +325,6 @@ R.route('/login').post(function(req, res, next) {
 	}
 	
 	var ack 		= getMSDState(msdObj);
-	
 	res.json(ack);
 	
 });
@@ -498,7 +516,10 @@ R.route('/api/:id/:api_id/close').post(function(req, res, next) {
 		
 });
 
-R.ws('/api/:id/:api_id', function(ws, req, next) {
+initMSD();
+
+R.ws( '/api/:id/:api_id', function(ws, req, next) {
+	
 	console.log( 'CALL API WS /dev/v1/micro_sd/api/{id}/{api_id}' ); 
 	console.log( 'id:'		, req.params.id );
 	console.log( 'api_id:'	, req.params.api_id );
@@ -547,6 +568,8 @@ R.ws('/api/:id/:api_id', function(ws, req, next) {
 //	});
 
 });
+
+
 
 module.exports = R;
 

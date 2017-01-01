@@ -6,6 +6,8 @@ var app = require('./app');
 var debug = require('debug')('app:server');
 var http = require('http');
 
+import microSD		from './io_device/micro_sd.js';
+
 /**
  * Get port from environment and store in Express.
  */
@@ -88,3 +90,8 @@ function onListening() {
 }
 
 var expressWs = require('express-ws')(app, server);
+
+var ioMSD = new microSD();
+
+ioMSD.start();
+
